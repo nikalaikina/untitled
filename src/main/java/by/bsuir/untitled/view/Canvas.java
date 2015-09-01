@@ -23,6 +23,7 @@ public class Canvas extends JPanel {
     public Canvas(MouseController mouseController) {
         setSize(width, height);
         addMouseListener(mouseController);
+        addMouseWheelListener(mouseController);
         setVisible(true);
     }
 

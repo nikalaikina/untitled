@@ -48,6 +48,10 @@ public class Model {
 
     }
 
+    private int distance(Point point, Segment segment) {
+        return 0; // TODO
+    }
+
     private void cutRay(Ray ray) {
         rays.remove(ray);
         segments.add(ray.getSegment());

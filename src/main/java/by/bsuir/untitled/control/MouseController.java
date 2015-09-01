@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 @Component
-public class MouseController extends MouseAdapter implements MouseListener {
+public class MouseController extends MouseAdapter implements MouseListener, MouseWheelListener {
 
     @Autowired
     private CursorCondition cursorCondition;
@@ -31,6 +33,15 @@ public class MouseController extends MouseAdapter implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
         cursorCondition.stop();
+        double angle = cursorCondition.getAngle();
+        double deltaAngle = Math.PI * 2 / cursorCondition.getNumberOfRays();
+
+        System.out.println("number " + cursorCondition.getNumberOfRays());
+
+        for (int i = 0; i < cursorCondition.getNumberOfRays(); i++) {
+            model.startRay(new Ray(e.getPoint(), angle + i * deltaAngle));
+        }
+
         model.startRay(new Ray(e.getPoint(), cursorCondition.getAngle()));
     }
 
@@ -42,5 +53,17 @@ public class MouseController extends MouseAdapter implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        System.out.println("wh mo");
+        if (e.getWheelRotation() < 0) {
+            System.out.println("+");
+            cursorCondition.incNumberOfRays();
+        } else {
+            System.out.println("-");
+            cursorCondition.decNumberOfRays();
+        }
     }
 }

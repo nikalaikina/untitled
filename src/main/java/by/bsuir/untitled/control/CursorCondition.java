@@ -15,7 +15,9 @@ public class CursorCondition {
     }
 
     public void decNumberOfRays() {
-        numberOfRays--;
+        if (numberOfRays > 1) {
+            numberOfRays--;
+        }
     }
 
     public void incAngle() {
