@@ -1,7 +1,5 @@
 package by.bsuir.untitled.model;
 
-import by.bsuir.untitled.control.math.Calculator;
-import by.bsuir.untitled.control.math.Proector;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -9,15 +7,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static by.bsuir.untitled.control.math.Calculator.distance;
+import static by.bsuir.untitled.control.math.Calculator.*;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class Model {
 
-    private Set<Ray> rays = new HashSet<>();
-    private List<Segment> segments = new ArrayList<>();
+    private final Set<Ray> rays = new HashSet<>();
+    private final List<Segment> segments = new ArrayList<>();
     private static final int e = 5;
 
     public void startRay(Ray ray) {
@@ -27,8 +25,12 @@ public class Model {
     }
 
     public void inc() {
-        rays.stream().filter(ray -> !ray.lengthen()).forEach(this::cutRay);
-        rays.stream().forEach(this::crashed);
+        rays.stream()
+            .filter(ray -> !ray.lengthen())
+            .forEach(this::cutRay);
+
+        rays.stream()
+            .forEach(this::crashed);
     }
 
     private void crashed(Ray ray) {
@@ -50,16 +52,16 @@ public class Model {
     private boolean crashed(Ray ray, Segment segment) {
         return distance(ray.getEnd(), segment) < distance(ray.getStart(), segment)
                 && distance(ray.getEnd(), segment) < e
-                && Calculator.distance(ray.getStart(), segment.getStart()) > e;
+                && distance(ray.getStart(), segment.getStart()) > e;
     }
 
     private void reflect(Ray ray, Segment segment) {
         cutRay(ray);
-        Proector proector = new Proector(ray.getSegment(), segment);
-        Point proection = proector.proect();
+        Point proection = proect(ray, segment);
+
         if (distance(proection, ray.getEnd()) > e) {
             System.out.println("reflectin");
-            double angle = Calculator.angle(ray.getSegment(), proection);
+            double angle = angle(ray.getSegment(), proection);
             startRay(new Ray(ray.getEnd(), angle));
         }
     }
@@ -70,9 +72,11 @@ public class Model {
     }
 
     public List<Segment> getModel() {
-        List<Segment> model = new ArrayList<>(segments.size() + rays.size());
+        List<Segment> model = new ArrayList<>();
         model.addAll(segments);
-        model.addAll(rays.stream().map(Ray::getSegment).collect(Collectors.toList()));
+        model.addAll(rays.stream()
+                         .map(Ray::getSegment)
+                         .collect(toList()));
 
         return model;
     }

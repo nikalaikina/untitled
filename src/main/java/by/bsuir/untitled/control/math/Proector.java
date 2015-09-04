@@ -6,16 +6,14 @@ import java.awt.*;
 
 import static by.bsuir.untitled.control.math.Calculator.distance;
 
-public class Proector {
+class Proector {
 
-    private double e = 5;
+    private final double e = 5;
     private final double koef = 0.9;
-    private Segment ray;
-    private Segment s;
+    private final Segment ray;
+    private final Segment s;
     private final int xkoef;
     private final int ykoef;
-
-    private Point proection = null;
 
     public static void main(String[] args) throws InterruptedException {
         Segment s = new Segment(new Point(0, 5), new Point(6, 2));
@@ -38,8 +36,8 @@ public class Proector {
         System.out.println("rs " + distance(ray.getStart(), s));
 
         for (double step = 1000; getDif(answer) > e; step *= koef) {
-            Point left = new Point((int)(answer.x - step * xkoef), (int)(answer.y - step * ykoef));
-            Point right = new Point((int)(answer.x + step * xkoef), (int)(answer.y + step * ykoef));
+            Point left = new Point((int) (answer.x - step * xkoef), (int) (answer.y - step * ykoef));
+            Point right = new Point((int) (answer.x + step * xkoef), (int) (answer.y + step * ykoef));
 
             answer = (getDif(left) < getDif(right)) ? left : right;
             System.out.println(step + " step " + answer);
@@ -52,12 +50,7 @@ public class Proector {
             }
         }
 
-        proection = answer;
         return answer;
-    }
-
-    public Point getProection() {
-        return proection;
     }
 
     private double getDif(Point guess) {

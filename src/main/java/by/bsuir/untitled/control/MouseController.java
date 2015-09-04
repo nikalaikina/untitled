@@ -21,11 +21,6 @@ public class MouseController extends MouseAdapter implements MouseListener, Mous
     private Model model;
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
     public void mousePressed(MouseEvent e) {
         cursorCondition.start();
     }
@@ -36,23 +31,9 @@ public class MouseController extends MouseAdapter implements MouseListener, Mous
         double angle = cursorCondition.getAngle();
         double deltaAngle = Math.PI * 2 / cursorCondition.getNumberOfRays();
 
-        System.out.println("number " + cursorCondition.getNumberOfRays());
-
         for (int i = 0; i < cursorCondition.getNumberOfRays(); i++) {
             model.startRay(new Ray(e.getPoint(), angle + i * deltaAngle));
         }
-
-        model.startRay(new Ray(e.getPoint(), cursorCondition.getAngle()));
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 
     @Override

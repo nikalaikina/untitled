@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 @Component
@@ -28,7 +27,8 @@ public class Canvas extends JPanel {
     }
 
     public void redraw(List<Segment> segments) {
-        segments.stream().forEach(this::drawSegment);
+        segments.stream()
+                .forEach(this::drawSegment);
     }
 
     private void drawSegment(Segment segment) {

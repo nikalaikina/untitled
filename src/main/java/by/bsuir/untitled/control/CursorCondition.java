@@ -3,28 +3,21 @@ package by.bsuir.untitled.control;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CursorCondition {
+class CursorCondition {
+
     private int numberOfRays = 1;
     private double angle = 0;
-    private double angleDelta = 0.00000001;
-
+    private final double angleDelta = 0.00000001;
     private Rotator rotator;
-
-    public void incNumberOfRays() {
-        numberOfRays++;
-    }
 
     public void incNumberOfRays(int delta) {
         numberOfRays += delta;
-    }
-
-    public void decNumberOfRays() {
-        if (numberOfRays > 1) {
-            numberOfRays--;
+        if (numberOfRays < 1) {
+            numberOfRays = 1;
         }
     }
 
-    public void incAngle() {
+    private void incAngle() {
         angle += angleDelta;
     }
 
@@ -43,20 +36,18 @@ public class CursorCondition {
     }
 
     public void stop() {
-        System.out.println("stop " + rotator);
         if (rotator != null) {
             rotator.interrupt();
         }
     }
 
-    class Rotator extends Thread {
+    private class Rotator extends Thread {
 
         @Override
         public void run() {
-            while(!isInterrupted()) {
+            while (!isInterrupted()) {
                 incAngle();
             }
-            System.out.println("interrupted");
         }
     }
 }

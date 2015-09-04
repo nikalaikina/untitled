@@ -3,6 +3,7 @@ package by.bsuir.untitled.model;
 import java.awt.*;
 
 public class Segment {
+
     private final Point start;
     private final Point end;
 

@@ -6,17 +6,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.swing.*;
 
-public class Main {
+class Main {
+
     public static void main(String[] args) {
 
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+        SwingUtilities.invokeLater(Main::createAndShowGui);
     }
 
-    private static void createAndShowGUI() {
+    private static void createAndShowGui() {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
         Frame frame = context.getBean(Frame.class);
         frame.setVisible(true);

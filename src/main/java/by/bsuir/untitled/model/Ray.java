@@ -4,11 +4,12 @@ import java.awt.*;
 import java.util.Objects;
 
 public class Ray {
+
     private final Point start;
     private final double angle; // radians
     private int length = 0;
 
-    public static final int delta = 5;
+    private static final int delta = 5;
 
     public Ray(Point start, double angle) {
         this.start = start;
@@ -35,10 +36,6 @@ public class Ray {
             return true;
         }
         return false;
-    }
-
-    public void lengthen(int delta) {
-        length += delta;
     }
 
     public Segment getSegment() {
