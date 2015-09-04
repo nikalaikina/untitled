@@ -57,13 +57,6 @@ public class MouseController extends MouseAdapter implements MouseListener, Mous
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        System.out.println("wh mo");
-        if (e.getWheelRotation() < 0) {
-            System.out.println("+");
-            cursorCondition.incNumberOfRays();
-        } else {
-            System.out.println("-");
-            cursorCondition.decNumberOfRays();
-        }
+         cursorCondition.incNumberOfRays(e.getWheelRotation() < 0 ? -1 : 1);
     }
 }

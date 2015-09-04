@@ -1,6 +1,7 @@
 package by.bsuir.untitled.model;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class Ray {
     private final Point start;
@@ -15,6 +16,12 @@ public class Ray {
     }
 
     public Point getEnd() {
+        return new Point(
+                (int) (start.getX() + (length * Math.cos(angle))),
+                (int) (start.getY() - (length * Math.sin(angle))));
+    }
+
+    public Point getStart() {
         return start;
     }
 
@@ -22,8 +29,12 @@ public class Ray {
         return length;
     }
 
-    public void lengthen() {
-        length += delta;
+    public boolean lengthen() {
+        if (Math.abs(getEnd().getX()) < 1000 && Math.abs(getEnd().getY()) < 1000) {
+            length += delta;
+            return true;
+        }
+        return false;
     }
 
     public void lengthen(int delta) {
@@ -31,11 +42,20 @@ public class Ray {
     }
 
     public Segment getSegment() {
-        Point end = new Point(
-                (int) (start.getX() + (length * Math.cos(angle))),
-                (int) (start.getY() - (length * Math.sin(angle))));
-
-        return new Segment(start, end);
+        return new Segment(start, getEnd());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ray ray = (Ray) o;
+        return Objects.equals(angle, ray.angle) &&
+                Objects.equals(start, ray.start);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, angle);
+    }
 }

@@ -14,6 +14,10 @@ public class CursorCondition {
         numberOfRays++;
     }
 
+    public void incNumberOfRays(int delta) {
+        numberOfRays += delta;
+    }
+
     public void decNumberOfRays() {
         if (numberOfRays > 1) {
             numberOfRays--;

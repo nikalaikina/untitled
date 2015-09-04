@@ -1,7 +1,8 @@
 package by.bsuir.untitled.model;
 
+import by.bsuir.untitled.control.math.Calculator;
+import by.bsuir.untitled.control.math.Proector;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,17 +11,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static by.bsuir.untitled.control.math.Calculator.distance;
+
 @Component
 public class Model {
 
     private Set<Ray> rays = new HashSet<>();
     private List<Segment> segments = new ArrayList<>();
-    private Set<Point> staticPoints = new HashSet<>();
-
-    public Model() {
-        rays.add(new Ray(new Point(12, 24), 5.9));
-        inc(100);
-    }
+    private static final int e = 5;
 
     public void startRay(Ray ray) {
         if (ray.getLength() == 0) {
@@ -28,28 +26,42 @@ public class Model {
         }
     }
 
-    private void inc(final int delta) {
-        rays.stream().forEach(r -> r.lengthen(delta));
-        resolve();
-    }
-
     public void inc() {
-        rays.stream().forEach(Ray::lengthen);
-        resolve();
+        rays.stream().filter(ray -> !ray.lengthen()).forEach(this::cutRay);
+        rays.stream().forEach(this::crashed);
     }
 
-    private void resolve() {
-        Set<Point> ends = rays
-                .stream()
-                .map(Ray::getEnd)
-                .collect(Collectors.toSet());
+    private void crashed(Ray ray) {
+        for (Ray otherRay : rays) {
+            if (ray != otherRay && crashed(ray, otherRay.getSegment())) {
+                reflect(ray, otherRay.getSegment());
+                return;
+            }
+        }
 
-        // Set<Point> pointspoints.addAll(staticPoints);
-
+        for (Segment segment : segments) {
+            if (crashed(ray, segment)) {
+                reflect(ray, segment);
+                return;
+            }
+        }
     }
 
-    private int distance(Point point, Segment segment) {
-        return 0; // TODO
+    private boolean crashed(Ray ray, Segment segment) {
+        return distance(ray.getEnd(), segment) < distance(ray.getStart(), segment)
+                && distance(ray.getEnd(), segment) < e
+                && Calculator.distance(ray.getStart(), segment.getStart()) > e;
+    }
+
+    private void reflect(Ray ray, Segment segment) {
+        cutRay(ray);
+        Proector proector = new Proector(ray.getSegment(), segment);
+        Point proection = proector.proect();
+        if (distance(proection, ray.getEnd()) > e) {
+            System.out.println("reflectin");
+            double angle = Calculator.angle(ray.getSegment(), proection);
+            startRay(new Ray(ray.getEnd(), angle));
+        }
     }
 
     private void cutRay(Ray ray) {

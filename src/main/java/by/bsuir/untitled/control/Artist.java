@@ -15,7 +15,7 @@ public class Artist {
     @Autowired
     private Canvas canvas;
 
-    @Scheduled(fixedRate = 15)
+    @Scheduled(fixedRate = 150)
     public void redraw() {
         model.inc();
         canvas.redraw(model.getModel());

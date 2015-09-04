@@ -18,4 +18,5 @@ public class Segment {
     public Point getEnd() {
         return end;
     }
+
 }
